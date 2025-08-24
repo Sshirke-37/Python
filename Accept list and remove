@@ -1,0 +1,15 @@
+#List accept and remove the element and print it
+list1 = input("Enter numbers separated by spaces: ").split()
+print("Original list:", list1)
+
+list2 = input("Enter elements to remove (separated by spaces): ").split()
+
+list3 = []
+
+for item in list2:
+    if item in list1:
+        list1.remove(item)
+        list3.append(item)
+
+print("Removed elements:", list3)
+print("Updated list:", list1)
