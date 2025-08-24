@@ -1,0 +1,22 @@
+#Assignment-02 Ques-01
+L1 = input("Enter elements for List 1 (space-separated): ").split()
+L2 = input("Enter elements for List 2 (space-separated): ").split()
+
+#L1-L2
+L1_minus_L2 = []
+for item in L1:
+    if item not in L2:
+        L1_minus_L2.append(item)
+
+#l2-L1
+L2_minus_L1 = []
+for item in L2:
+    if item not in L1:
+        L2_minus_L1.append(item)
+
+#Symmetric difference = (L1 - L2) + (L2 - L1)
+symmetric_diff = L1_minus_L2 + L2_minus_L1
+
+print("\n L1 - L2:", L1_minus_L2)
+print(" L2 - L1:", L2_minus_L1)
+print(" Symmetric Difference:", symmetric_diff)
