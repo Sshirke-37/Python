@@ -15,20 +15,28 @@ def add_product():
         print("Error: This product code already exists. Please enter a unique code.")
         return
 
-    stock = int(input("Enter stock in hand (numeric): "))
+    stock_input = input("Enter stock in hand (numeric): ").strip()
+    if not stock_input.isdigit():
+        print("Error: Stock must be a whole number,no special symbols or letters are allowed !")
+        return
+    stock = int(stock_input)
     if stock < 0:
-        print("Error: Stock must be a non-negative number.")
+        print("Error: Stock must be a non-negative number, Please enter a proper number")
         return
 
     print("Available Categories:")
     for items in Product_Categories:
-        print(f" - {items}")
-    category = input("Enter product category: ")
+        print(" -", items)
+    category = input("Enter product category: ").strip()
     if category not in Product_Categories:
         print("Error: Invalid category. Please choose from the predefined list.")
         return
 
-    price = float(input("Enter price (numeric): "))
+    price_input = input("Enter price (numeric): ").strip()
+    if not price_input.replace('.', '', 1).isdigit():
+        print("Error: Price must be a number. No letters or special symbols allowed !")
+        return
+    price = float(price_input)
     if price < 0:
         print("Error: Price must be a non-negative number.")
         return
