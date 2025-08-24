@@ -1,0 +1,11 @@
+#Store in list and count occurences without using the in-built function
+str_list = input("Enter strings separated by spaces: ").split()
+occurrences = {}
+for item in str_list:
+    if item in occurrences:
+        occurrences[item] += 1
+    else:
+        occurrences[item] = 1
+print("\n Occurrence of each element:")
+for key in occurrences:
+    print(f"{key}: {occurrences[key]}")
