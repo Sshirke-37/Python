@@ -2,6 +2,7 @@
 # Main dictionary to store product records
 products = {}
 
+products = {101:{'stock_in_hand': 10,'product_category': "Electronics",'price': 200}}
 # Predefined product categories
 Product_Categories = ['Electronics', 'Home Appliances', 'Clothing', 'Books', 'Groceries']
 
@@ -145,3 +146,4 @@ def main_menu():
             break
         else:
             print("Invalid choice. Please enter a number from 1 to 6.")
+
