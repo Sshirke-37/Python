@@ -1,0 +1,54 @@
+from datetime import datetime
+
+# Get current date for filename
+date_str = datetime.now().strftime("%d_%m_%Y")
+data_filename = f"data_{date_str}.txt"
+
+# Initialize product dictionary
+product = { }
+
+# Accept data from user
+while True:
+    code = input("Enter Product Code: ")
+    name = input("Enter Product Name: ")
+    price = float(input("Enter Price (>5000): "))
+    if price <= 5000:
+        print("Price must be greater than 5000. Try again.")
+        continue
+    quantity = int(input("Enter Quantity: "))
+    
+    product[code] = [name, price, quantity]
+    
+    more = input("Do you want to enter more products? (yes/no): ").strip().lower()
+    if more != 'yes':
+        break
+
+# Write all products to data_dd_mm_yyyy.txt
+with open(data_filename, 'w') as f:
+    for code in product:
+        f.write(f"{code} : {product[code]}\n")
+
+# Write products with price > 5000 to price1.txt
+with open("price1.txt", 'w') as f1:
+    for code in product:
+        if product[code][1] > 5000:
+            f1.write(f"{code} : {product[code]}\n")
+
+# Write products with price > 10000 to price2.txt
+with open("price2.txt", 'w') as f2:
+    for code in product:
+        if product[code][1] > 10000:
+            f2.write(f"{code} : {product[code]}\n")
+
+# Display contents of all three files
+print("\nContents of", data_filename)
+with open(data_filename, 'r') as f:
+    print(f.read())
+
+print("\nContents of price1.txt")
+with open("price1.txt", 'r') as f1:
+    print(f1.read())
+
+print("\nContents of price2.txt")
+with open("price2.txt", 'r') as f2:
+    print(f2.read())
