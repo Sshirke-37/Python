@@ -1,10 +1,8 @@
 #Dictionary CRUD of PRODUCTS
 # Main dictionary to store product records
-#products = {}
-from tabulate import tabulate
+products = {}
 
-products={'A001':{'stock_in_hand': 10,'product_category': "Electronics",'price': 200}}
-
+products = {101:{'stock_in_hand': 10,'product_category': "Electronics",'price': 200}}
 # Predefined product categories
 Product_Categories = ['Electronics', 'Home Appliances', 'Clothing', 'Books', 'Groceries']
 
@@ -122,53 +120,59 @@ def display_all_products():
             for key, value in details.items():
                 print(f"  {key.replace('_', ' ').title()}: {value}")
 
-# Function to count category wise
-def category_wise_count():
+# Q1: Count products category-wise
+def count_by_category():
     if not products:
-        print("No products available.")
+        print("No products to count.")
         return
-
     category_count = {}
-    for details in products.values():
-        category = details['product_category']
-        category_count[category] = category_count.get(category, 0) + 1
+    for code in products:
+        category = products[code]['product_category']
+        if category in category_count:
+            category_count[category] += 1
+        else:
+            category_count[category] = 1
+    print("\n--- Product Count by Category ---")
+    for category in category_count:
+        print(f"{category}: {category_count[category]}")
 
-    print("\n--- Category-wise Product Count ---")
-    for category, count in category_count.items():
-        print(f"{category}: {count}")
-
-
-#Sorting the product price category wise
-def sort_product_price():
+# Q2: Filter products by stock inventory
+def inventory_check():
     if not products:
-        print("Not product is available , Please add the products !")
+        print("No products to filter.")
         return
-    
-    s_items = sorted(products.items(), key=lambda x: x[1]['price'])
-    
-    print("\n---Products Sorted by Price---")
-    for prod_code, details in s_items:
-        print(f"Product Code:{prod_code},Price:{details['price']},Stock:{details['stock_in_hand']},Category:{details['product_category']}")   
+    inventory_input = input("Enter stock to check (e.g., 10, 20): ")
+    if not inventory_input.isdigit():
+        print("Invalid input. Please enter a whole number.")
+        return
+    inventory = int(inventory_input)
+    print(f"\n--- Products with Stock > {inventory} ---")
+    found = False
+    for code in products:
+        if products[code]['stock_in_hand'] > inventory:
+            found = True
+            print(f"\nProduct Code: {code}")
+            for key in products[code]:
+                print(f"  {key.replace('_', ' ').title()}: {products[code][key]}")
+    if not found:
+        print("No products found with stock above the inventory.")
 
-'''
-def displayTable(products):
-    new_dict = dict()
-
-    for key,value in products.items():
-        tempList = list()
-        tempList.append('prod_code')
-        tempList.append(value['stock_in_hand'])
-        tempList.append(value['product_category'])
-        tempList.append(value['Price'])
-        new_dict[prod_code]=tempList
-    table = tabulate(new_dict.values(),
-                     headers=["Product Code","Category","Stock","Price"]
-                     ,
-                     tablefmt = "fancy_grid"
-                     )
-    print(table)
-'''
-
+# Q3: Sort products category-wise
+def sort_by_category():
+    if not products:
+        print("No products to sort.")
+        return
+    sorted_keys = []
+    for category in Product_Categories:
+        for code in products:
+            if products[code]['product_category'] == category:
+                sorted_keys.append(code)
+    print("\n--- Products Sorted by Category ---")
+    for code in sorted_keys:
+        print(f"\nProduct Code: {code}")
+        for key in products[code]:
+            print(f"  {key.replace('_', ' ').title()}: {products[code][key]}")
+            
 # Main menu loop
 def main_menu():
     while True:
@@ -178,10 +182,12 @@ def main_menu():
         print("3. Delete a product")
         print("4. Search for a product")
         print("5. Display all products")
-        print("6. Count product category wise")
-        print("7. Sort the product price wise")
-        print("8. Exit")
-        choice = input("Enter your choice (1-8): ")
+        print("6. Count products category-wise")
+        print("7. Specific Stocks In Hand")
+        print("8. Sort products by category")
+        print("9. Exit")
+        choice = input("Enter your choice (1-9): ")
+        
         if choice == '1':
             add_product()
         elif choice == '2':
@@ -193,14 +199,13 @@ def main_menu():
         elif choice == '5':
             display_all_products()
         elif choice == '6':
-            category_wise_count()
+            count_by_category()
         elif choice == '7':
-            displayTable(products)
+            inventory_check()
         elif choice == '8':
-            sort_product_price()
+            sort_by_category()
         elif choice == '9':
-            print("Exitting the program !")
+            print("Exiting the program. Goodbye!")
             break
         else:
-            print("Invalid choice. Please enter a number from 1 to 7.")
-
+            print("Invalid choice. Please enter a number from 1 to 9.")
