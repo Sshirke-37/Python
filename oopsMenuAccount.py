@@ -33,7 +33,7 @@ class Account:
 
 #Display Details
     def display_details(self):
-        print("\n📄 Account Details:")
+        print("\nAccount Details:")
         print(f"Bank Name      : {Account.bank_name}")
         print(f"Account Number : {self.acc_number}")
         print(f"Holder Name    : {self.holder_name}")
@@ -99,3 +99,4 @@ def menu():
         
         else:
             print("Invalid choice. Please try again.")
+
