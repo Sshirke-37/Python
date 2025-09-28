@@ -1,0 +1,101 @@
+#OOPS code
+class Account:
+    minimum_balance = 3000
+    bank_name = "Laxmi Chit Fund"
+    currency = "INR"
+    def __init__(self,acc_number,holder_name,balance,acc_type):
+        self.acc_number = acc_number
+        self.holder_name = holder_name
+        self.balance = balance
+        self.acc_type = acc_type
+
+#Deposite
+    def deposite(self,amount):
+        if amount > 0:
+            self.balance += amount
+            print(f"Deposited amount {amount}{Account.currency}")
+        else:
+            print("Amount should be in positive !")
+
+#Withdraw
+    def withdraw(self,amount):
+        if amount <= 0:
+            print("Please enter the proper amount (NOT IN NEGATIVE)")
+        elif self.balance - amount < Account.minimum_balance:
+            print(f"The amount cannot be withdraw . Because minimum balance of the account is {Account.minimum_balance} {Account.currency} and it must be maintained.")
+        else:
+            self.balance -= amount
+            print(f"Withdrawn {amount} {Account.currency}. New balance: {self.balance} {Account.currency}")
+
+#Balance Check
+    def balance_enquiry(self):
+        print(f"Current balance: {self.balance} {Account.currency}")
+
+#Display Details
+    def display_details(self):
+        print("\n📄 Account Details:")
+        print(f"Bank Name      : {Account.bank_name}")
+        print(f"Account Number : {self.acc_number}")
+        print(f"Holder Name    : {self.holder_name}")
+        print(f"Account Type   : {self.acc_type}")
+        print(f"Balance        : {self.balance} {Account.currency}\n")
+
+
+def menu():
+    print("\nWelcome to Laxmi Chit Fund ltd")
+    #acc = None
+
+    while True:
+        print("\n--- Menu ---")
+        print("1. Open Account")
+        print("2. Deposit")
+        print("3. Withdraw")
+        print("4. Balance Enquiry")
+        print("5. Display Account Details")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1-6): ")
+
+        if choice == '1':
+            try:
+                acc_number = input("Enter Account Number: ")
+                holder_name = input("Enter Account Holder Name: ")
+                acc_type = input("Enter Account Type (Savings/Current): ")
+                balance = float(input(f"Enter Opening Balance (min {Account.minimum_balance}): "))
+                acc = Account(acc_number, holder_name, balance, acc_type)
+                print("Account created successfully!")
+            except ValueError as ve:
+                print(f"Error: {ve}")
+
+        elif choice == '2':
+            if acc:
+                amount = float(input("Enter amount to deposit: "))
+                acc.deposite(amount)
+            else:
+                print("Please open an account first.")
+                
+        elif choice == '3':
+            if acc:
+                amount = float(input("Enter amount to withdraw: "))
+                acc.withdraw(amount)
+            else:
+                print("Please open an account first.")
+
+        elif choice == '5':
+            if acc:
+                acc.display_details()
+            else:
+                print("Please first open your account !")
+
+        elif choice == '4':
+            if acc:
+                acc.balance_enquiry()
+            else:
+                print("Please first open your account !")
+
+        elif choice == '6':
+            print("Logged Out Successfully !")
+            break
+        
+        else:
+            print("Invalid choice. Please try again.")
