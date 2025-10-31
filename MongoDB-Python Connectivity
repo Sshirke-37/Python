@@ -1,0 +1,82 @@
+import pymongo
+import re
+
+# Connect to MongoDB
+client = pymongo.MongoClient("mongodb://localhost:27017")
+db = client["store"]
+products = db["products"]
+categories = db["categories"]
+
+# Validation: product name must be alphanumeric and 3+ characters
+def is_valid_name(name):
+    return re.match(r'^[A-Za-z0-9 ]{3,}$', name)
+
+# Create category
+def create_category():
+    cat_id = input("Category ID (e.g., C001): ")
+    name = input("Category name: ")
+    categories.insert_one({"_id": cat_id, "name": name})
+    print(f"Category '{name}' created.")
+
+# Create product
+def create_product():
+    prod_id = input("Product ID (e.g., P001): ")
+    name = input("Product name: ")
+    if not is_valid_name(name):
+        print("Invalid product name! Use 3+ letters/numbers.")
+        return
+    price = float(input("Price: "))
+    cat_id = input("Category ID: ")
+    if not categories.find_one({"_id": cat_id}):
+        print("Category not found!")
+        return
+    products.insert_one({"_id": prod_id, "name": name, "price": price, "category_id": cat_id})
+    print(f"Product '{name}' added.")
+
+# Read all products
+def read_products():
+    for p in products.find():
+        print(p)
+
+# Update product price
+def update_price():
+    prod_id = input("Product ID to update: ")
+    new_price = float(input("New price: "))
+    products.update_one({"_id": prod_id}, {"$set": {"price": new_price}})
+    print("Price updated.")
+
+# Delete product
+def delete_product():
+    prod_id = input("Product ID to delete: ")
+    products.delete_one({"_id": prod_id})
+    print("Product deleted.")
+
+def menu():
+    def menu():
+        while True:
+            print("\n=== Product Management Menu ===")
+            print("1. Create Category")
+            print("2. Create Product")
+            print("3. View Products")
+            print("4. Update Price")
+            print("5. Delete Product")
+            print("6. Exit")
+            choice = input("Choose an option (1-6): ")
+            if choice == "1":
+                create_category()
+            elif choice == "2":
+                create_product()
+            elif choice == "3":
+                read_products()
+            elif choice == "4":
+                update_price()
+            elif choice == "5":
+                delete_product()
+            elif choice == "6":
+                print("Exiting program. Goodbye!")
+                break
+            else:
+                print("Invalid choice! Please enter a number between 1 and 6.")
+
+if __name__ == "__main__":
+    menu()
